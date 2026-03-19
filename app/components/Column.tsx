@@ -11,7 +11,7 @@ export default function Column({
   id: string;
   index: number;
 }) {
-  const { ref } = useSortable({
+  const { ref, isDropTarget } = useSortable({
     id,
     index,
     type: "column",
@@ -20,7 +20,7 @@ export default function Column({
   });
 
   return (
-    <div className="Column" ref={ref}>
+    <div className={isDropTarget ? "Column active" : "Column"} ref={ref}>
       {children}
     </div>
   );

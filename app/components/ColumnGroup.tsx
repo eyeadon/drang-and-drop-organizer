@@ -15,6 +15,7 @@ export default function ColumnGroup() {
     A: ["A0", "A1", "A2"],
     B: ["B0", "B1"],
     C: [],
+    D: [],
   });
   const previousItems = useRef(items);
   const [columnOrder, setColumnOrder] = useState(() => Object.keys(items));
@@ -47,7 +48,7 @@ export default function ColumnGroup() {
         }
       }}
     >
-      <div className="Root">
+      <div className="ColumnRoot">
         {columnOrder.map((column, columnIndex) => (
           <Column key={column} id={column} index={columnIndex}>
             {items[column].map((id, index) => (

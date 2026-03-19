@@ -9,16 +9,22 @@ export default function Item({
   index: number;
   column: string;
 }) {
-  const { ref, isDragging } = useSortable({
-    id,
-    index,
-    type: "item",
-    accept: "item",
-    group: column,
-  });
+  const { ref, isDragging, isDropping, isDropTarget, isDragSource } =
+    useSortable({
+      id,
+      index,
+      type: "item",
+      accept: "item",
+      group: column,
+    });
 
   return (
-    <button className="Item" ref={ref} data-dragging={isDragging}>
+    <button
+      className={isDragSource ? "Item active" : "Item"}
+      ref={ref}
+      data-dragging={isDragging}
+      data-dropping={isDropping}
+    >
       {id}
     </button>
   );

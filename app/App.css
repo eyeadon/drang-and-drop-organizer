@@ -1,8 +1,4 @@
-body {
-  padding: 1em;
-  font-family: system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
+/* Draggable Button */
 
 .btn {
   display: flex;
@@ -272,7 +268,7 @@ body {
 
 /* Columns */
 
-.Root {
+.ColumnRoot {
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -284,11 +280,16 @@ body {
   flex-direction: column;
   gap: 10px;
   padding: 20px;
-  min-width: 175px;
-  min-height: 200px;
+  min-width: 300px;
+  min-height: 400px;
   background-color: rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+}
+
+.Column.active {
+  background-color: #bef4f1;
+  box-shadow: inset #1eb99d 0 0 0 2px;
 }
 
 .Item {
@@ -315,4 +316,13 @@ body {
     inset 0px 0px 1px rgba(0, 0, 0, 0.5),
     -1px 0 15px 0 rgba(34, 33, 81, 0.01),
     0px 15px 15px 0 rgba(34, 33, 81, 0.25);
+}
+
+.Item[data-dropping="true"] {
+  box-shadow: inset #1eb99d 0 0 0 2px;
+}
+
+.Item.active {
+  background-color: #93ece7;
+  box-shadow: inset #1eb99d 0 0 0 2px;
 }
