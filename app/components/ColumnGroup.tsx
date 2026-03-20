@@ -16,33 +16,30 @@ interface Props {
 }
 
 export default function ColumnGroup({ tasks }: Props) {
-  const [items, setItems] = useState<ColumnType>({
-    A: ["A0", "A1", "A2"],
-    B: ["B0", "B1"],
-    C: [],
-    D: [],
-  });
-  const previousItems = useRef(items);
-  const [columnOrder, setColumnOrder] = useState(() => Object.keys(items));
+  const [columnOrder, setColumnOrder] = useState([1, 2, 3, 4]);
+
+  const [activeTasks, setActiveTasks] = useState<Task[]>(tasks);
+
+  const previousItems = useRef(tasks);
 
   return (
     <DragDropProvider
       onDragStart={() => {
-        previousItems.current = items;
+        previousItems.current = tasks;
       }}
       onDragOver={(event) => {
         const { source } = event.operation;
 
         if (source?.type === "column") return;
 
-        setItems((items) => move(items, event));
+        setActiveTasks((tasks) => move(tasks, event));
       }}
       onDragEnd={(event) => {
         const { source } = event.operation;
 
         if (event.canceled) {
           if (source?.type === "item") {
-            setItems(previousItems.current);
+            setActiveTasks(previousItems.current);
           }
 
           return;
@@ -62,9 +59,14 @@ export default function ColumnGroup({ tasks }: Props) {
       </ul>
       <div className="ColumnRoot">
         {columnOrder.map((column, columnIndex) => (
-          <Column key={column} id={column} index={columnIndex}>
-            {items[column].map((id, index) => (
-              <Item key={id} id={id} index={index} column={column} />
+          <Column key={column} id={column.toString()} index={columnIndex}>
+            {activeTasks.map((task, index) => (
+              <Item
+                key={task.id}
+                id={task.id.toString()}
+                index={index}
+                column={column.toString()}
+              />
             ))}
           </Column>
         ))}
