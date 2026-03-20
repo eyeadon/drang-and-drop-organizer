@@ -11,10 +11,12 @@ export default function AddTaskForm({ authorId }: Props) {
   async function createPost(formData: FormData) {
     "use server";
     const content = formData.get("content") as string;
+    const group = formData.get("group") as string;
 
     await prisma.task.create({
       data: {
         content,
+        group,
         authorId,
       },
     });
@@ -28,12 +30,24 @@ export default function AddTaskForm({ authorId }: Props) {
       <Form action={createPost} className="space-y-6">
         <div>
           <label htmlFor="content" className="block text-lg mb-2">
-            Content
+            Task
           </label>
           <textarea
             id="content"
             name="content"
             placeholder="Task..."
+            rows={1}
+            className="w-full px-4 py-2 border rounded-lg"
+          />
+        </div>
+        <div>
+          <label htmlFor="group" className="block text-lg mb-2">
+            Group
+          </label>
+          <textarea
+            id="group"
+            name="group"
+            placeholder="Group..."
             rows={1}
             className="w-full px-4 py-2 border rounded-lg"
           />
