@@ -5,12 +5,17 @@ import { move } from "@dnd-kit/helpers";
 import "../App.css";
 import Column from "./Column";
 import Item from "./Item";
+import { Task } from "../generated/prisma/client";
 
 interface ColumnType {
   [key: string]: string[];
 }
 
-export default function ColumnGroup() {
+interface Props {
+  tasks: Task[];
+}
+
+export default function ColumnGroup({ tasks }: Props) {
   const [items, setItems] = useState<ColumnType>({
     A: ["A0", "A1", "A2"],
     B: ["B0", "B1"],
@@ -48,6 +53,13 @@ export default function ColumnGroup() {
         }
       }}
     >
+      <ul className="font-sans max-w-2xl space-y-4">
+        {tasks.map((task) => (
+          <li key={task.id}>
+            <span className="font-semibold">{task.content}</span>
+          </li>
+        ))}
+      </ul>
       <div className="ColumnRoot">
         {columnOrder.map((column, columnIndex) => (
           <Column key={column} id={column} index={columnIndex}>
