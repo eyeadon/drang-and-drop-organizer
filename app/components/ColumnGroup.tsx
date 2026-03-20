@@ -53,7 +53,7 @@ export default function ColumnGroup({ tasks }: Props) {
         }
       }}
     >
-      <ul className="font-sans max-w-2xl space-y-4">
+      <ul className="font-sans space-y-4">
         {tasks.map((task) => (
           <li key={task.id}>
             <span className="font-semibold">{task.content}</span>
