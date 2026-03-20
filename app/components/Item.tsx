@@ -9,14 +9,13 @@ export default function Item({
   index: number;
   column: string;
 }) {
-  const { ref, isDragging, isDropping, isDropTarget, isDragSource } =
-    useSortable({
-      id,
-      index,
-      type: "item",
-      accept: "item",
-      group: column,
-    });
+  const { ref, isDragging, isDropping, isDragSource } = useSortable({
+    id,
+    index,
+    type: "item",
+    accept: "item",
+    group: column,
+  });
 
   return (
     <button

@@ -287,8 +287,13 @@
   border-radius: 10px;
 }
 
-.Column.active {
+/* .Column.active {
   background-color: #bef4f1;
+  box-shadow: inset #1eb99d 0 0 0 2px;
+} */
+
+.Column:has(.Item[data-dragging="true"]) {
+  background-color: #f4dbbe;
   box-shadow: inset #1eb99d 0 0 0 2px;
 }
 
@@ -325,4 +330,11 @@
 .Item.active {
   background-color: #93ece7;
   box-shadow: inset #1eb99d 0 0 0 2px;
+}
+
+.Item[data-dnd-placeholder] {
+  opacity: 0.5;
+  background-color: lightcoral;
+  box-shadow: none;
+  transform: none;
 }
