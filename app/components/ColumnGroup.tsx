@@ -7,6 +7,7 @@ import Column from "./Column";
 import Item from "./Item";
 import { Task } from "../generated/prisma/client";
 import { ColumnType } from "../page";
+import { columnTasksToStrings, StringColumnType } from "../functions";
 
 interface Props {
   tasks: Task[];
@@ -14,9 +15,11 @@ interface Props {
 }
 
 export default function ColumnGroup({ tasks, startingColumns }: Props) {
-  const [columns, setColumns] = useState<ColumnType>(startingColumns);
+  const [columns, setColumns] = useState<StringColumnType>(
+    columnTasksToStrings(startingColumns),
+  );
 
-  const previousColumns = useRef<ColumnType>(columns);
+  const previousColumns = useRef<StringColumnType>(columns);
 
   const [columnOrder, setColumnOrder] = useState(() => Object.keys(columns));
 
@@ -52,13 +55,8 @@ export default function ColumnGroup({ tasks, startingColumns }: Props) {
         {columnOrder.map((column, columnIndex) => (
           <Column key={column} id={column} index={columnIndex}>
             {columns[column].map((task, index) => (
-              <Item
-                key={task.id}
-                id={task.id.toString()}
-                index={index}
-                column={column}
-              >
-                {task.content}
+              <Item key={task} id={task} index={index} column={column}>
+                {task}
               </Item>
             ))}
           </Column>
