@@ -12,17 +12,17 @@ export default async function Home() {
   const users = await prisma.user.findMany();
   const tasks = await prisma.task.findMany();
 
-  let columnGroups: ColumnType = {
+  let startingColumns: ColumnType = {
     A: [],
     B: [],
     C: [],
     D: [],
   };
 
-  Object.keys(columnGroups).forEach((key) => {
+  Object.keys(startingColumns).forEach((key) => {
     tasks.forEach((task) => {
       if (task.group === key) {
-        columnGroups[key].push(task);
+        startingColumns[key].push(task);
       }
     });
   });
@@ -44,7 +44,7 @@ export default async function Home() {
             <AddTaskForm authorId={1} />
           </div>
           <div className="flex flex-col gap-4 items-center  sm:flex-col">
-            <ColumnGroup tasks={tasks} columnGroups={columnGroups} />
+            <ColumnGroup tasks={tasks} startingColumns={startingColumns} />
           </div>
         </main>
       </div>

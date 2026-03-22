@@ -10,11 +10,11 @@ import { ColumnType } from "../page";
 
 interface Props {
   tasks: Task[];
-  columnGroups: ColumnType;
+  startingColumns: ColumnType;
 }
 
-export default function ColumnGroup({ tasks, columnGroups }: Props) {
-  const [columns, setColumns] = useState<ColumnType>(columnGroups);
+export default function ColumnGroup({ tasks, startingColumns }: Props) {
+  const [columns, setColumns] = useState<ColumnType>(startingColumns);
 
   // const [activeTasks, setActiveTasks] = useState<Task[]>(tasks);
 
