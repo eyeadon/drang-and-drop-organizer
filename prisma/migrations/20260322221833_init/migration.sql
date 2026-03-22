@@ -12,6 +12,7 @@ CREATE TABLE "Task" (
     "id" SERIAL NOT NULL,
     "content" TEXT NOT NULL,
     "group" TEXT NOT NULL,
+    "index" INTEGER,
     "authorId" INTEGER NOT NULL,
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
