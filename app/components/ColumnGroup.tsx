@@ -16,8 +16,6 @@ interface Props {
 export default function ColumnGroup({ tasks, startingColumns }: Props) {
   const [columns, setColumns] = useState<ColumnType>(startingColumns);
 
-  // const [activeTasks, setActiveTasks] = useState<Task[]>(tasks);
-
   const previousColumns = useRef<ColumnType>(columns);
 
   const [columnOrder, setColumnOrder] = useState(() => Object.keys(columns));
