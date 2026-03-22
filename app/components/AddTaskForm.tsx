@@ -37,7 +37,7 @@ export default function AddTaskForm({ authorId }: Props) {
             name="content"
             placeholder="Task..."
             rows={1}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="w-full px-4 py-2 border rounded-lg bg-white"
           />
         </div>
         <div>
@@ -49,7 +49,7 @@ export default function AddTaskForm({ authorId }: Props) {
             name="group"
             placeholder="Group..."
             rows={1}
-            className="w-full px-4 py-2 border rounded-lg"
+            className="w-full px-4 py-2 border rounded-lg bg-white"
           />
         </div>
         <button
