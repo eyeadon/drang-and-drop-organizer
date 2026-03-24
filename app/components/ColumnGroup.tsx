@@ -14,8 +14,6 @@ export interface ColumnType {
 }
 
 export default function ColumnGroup() {
-  // const { data: tasks, error, isLoading } = useTasks();
-
   let startingColumns: ColumnType = {
     A: [],
     B: [],
@@ -24,9 +22,7 @@ export default function ColumnGroup() {
   };
 
   const [columns, setColumns] = useState<ColumnType>(startingColumns);
-
   const previousColumns = useRef(columns);
-
   const [columnOrder, setColumnOrder] = useState(() => Object.keys(columns));
 
   function populateStartingColumns(tasks: Task[], startingColumns: ColumnType) {
@@ -53,16 +49,6 @@ export default function ColumnGroup() {
 
     fetchData();
   }, []); //
-
-  // useEffect(() => {
-  //   if (tasks) {
-  //     setColumns(populateStartingColumns(tasks, columns));
-  //   }
-  // }, [tasks]);
-
-  // if (error) return "Error loading tasks";
-
-  // if (isLoading) return "Loading...";
 
   return (
     <DragDropProvider
