@@ -7,7 +7,7 @@ export default function Item({
   column,
   children,
 }: {
-  id: string;
+  id: number;
   index: number;
   column: string;
   children: ReactNode;

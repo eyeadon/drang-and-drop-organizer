@@ -6,8 +6,8 @@ const useTasks = () =>
   useQuery<Task[]>({
     queryKey: ["tasks"],
     queryFn: () => axios.get<Task[]>("/api/tasks").then((res) => res.data),
-    staleTime: 60 * 1000,
-    retry: 3,
+    // staleTime: 60 * 1000,
+    // retry: 3,
   });
 
 export default useTasks;
