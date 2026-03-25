@@ -26,6 +26,7 @@ export default function Item({
       ref={ref}
       data-dragging={isDragging}
       data-dropping={isDropping}
+      data-index={index}
     >
       {children}
     </button>

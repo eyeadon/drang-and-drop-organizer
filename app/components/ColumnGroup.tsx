@@ -84,8 +84,16 @@ export default function ColumnGroup() {
           return;
         }
 
-        if (source?.type === "item") {
-          saveTask(parseInt(source.id.toString()), { index: 1 });
+        let sourceIndex = source?.element?.getAttribute("data-index");
+
+        if (
+          source?.type === "item" &&
+          sourceIndex !== null &&
+          sourceIndex !== undefined
+        ) {
+          saveTask(parseInt(source.id.toString()), {
+            index: parseInt(sourceIndex),
+          });
         }
 
         if (source?.type === "column") {
