@@ -84,20 +84,18 @@ export default function ColumnGroup() {
           return;
         }
 
-        let sourceIndex = source?.element?.getAttribute("data-index");
+        if (source) {
+          const sourceIndex = source!.element!.getAttribute("data-index");
 
-        if (
-          source?.type === "item" &&
-          sourceIndex !== null &&
-          sourceIndex !== undefined
-        ) {
-          saveTask(parseInt(source.id.toString()), {
-            index: parseInt(sourceIndex),
-          });
-        }
+          if (source.type === "item" && sourceIndex !== null) {
+            saveTask(parseInt(source.id.toString()), {
+              index: parseInt(sourceIndex),
+            });
+          }
 
-        if (source?.type === "column") {
-          setColumnOrder((columns) => move(columns, event));
+          if (source.type === "column") {
+            setColumnOrder((columns) => move(columns, event));
+          }
         }
       }}
     >
