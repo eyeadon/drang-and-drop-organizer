@@ -85,7 +85,7 @@ export default function ColumnGroup() {
         }
 
         if (source) {
-          const sourceIndex = source!.element!.getAttribute("data-index");
+          const sourceIndex = source.element!.getAttribute("data-index");
 
           if (source.type === "item" && sourceIndex !== null) {
             saveTask(parseInt(source.id.toString()), {

@@ -21,6 +21,7 @@ export default function Column({
 
   return (
     <div className={isDropTarget ? "Column active" : "Column"} ref={ref}>
+      <h1>{id}</h1>
       {children}
     </div>
   );
