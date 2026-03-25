@@ -50,6 +50,18 @@ export default function ColumnGroup() {
     fetchData();
   }, []); //
 
+  async function saveTask(
+    id: number,
+    data: {
+      content?: string;
+      group?: string;
+      index?: number;
+      authorId?: number;
+    },
+  ) {
+    await axios.patch("/api/tasks/" + id, data);
+  }
+
   return (
     <DragDropProvider
       onDragStart={() => {
@@ -69,8 +81,11 @@ export default function ColumnGroup() {
           if (source?.type === "item") {
             setColumns(previousColumns.current);
           }
-
           return;
+        }
+
+        if (source?.type === "item") {
+          saveTask(parseInt(source.id.toString()), { index: 1 });
         }
 
         if (source?.type === "column") {

@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function AddTaskForm({ authorId }: Props) {
-  async function createPost(formData: FormData) {
+  async function createTask(formData: FormData) {
     "use server";
     const content = formData.get("content") as string;
     const group = formData.get("group") as string;
@@ -27,7 +27,7 @@ export default function AddTaskForm({ authorId }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      <Form action={createPost} className="space-y-6">
+      <Form action={createTask} className="space-y-6">
         <div>
           <label htmlFor="content" className="block text-black text-lg mb-2">
             Task
