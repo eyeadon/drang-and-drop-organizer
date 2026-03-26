@@ -9,7 +9,7 @@ export async function PATCH(
 
   const body = await request.json();
 
-  const { content, group, authorId } = body;
+  const { content, authorId } = body;
 
   // check that valid user exists
   if (authorId) {
@@ -20,23 +20,22 @@ export async function PATCH(
       return NextResponse.json({ error: "Invalid user" }, { status: 400 });
   }
 
-  const task = await prisma.task.findUnique({
+  const board = await prisma.board.findUnique({
     where: { id: parseInt(id) },
   });
 
-  if (!task)
-    return NextResponse.json({ error: "Invalid task" }, { status: 404 });
+  if (!board)
+    return NextResponse.json({ error: "Invalid board" }, { status: 404 });
 
-  const updatedTask = await prisma.task.update({
-    where: { id: task.id },
+  const updatedBoard = await prisma.board.update({
+    where: { id: board.id },
     data: {
       content,
-      group,
       authorId,
     },
   });
 
-  return NextResponse.json(updatedTask);
+  return NextResponse.json(updatedBoard);
 }
 
 export async function DELETE(
@@ -45,15 +44,15 @@ export async function DELETE(
 ) {
   const { id } = await params;
 
-  const task = await prisma.task.findUnique({
+  const board = await prisma.board.findUnique({
     where: { id: parseInt(id) },
   });
 
-  if (!task)
-    return NextResponse.json({ error: "Invalid task" }, { status: 404 });
+  if (!board)
+    return NextResponse.json({ error: "Invalid board" }, { status: 404 });
 
-  await prisma.task.delete({
-    where: { id: task.id },
+  await prisma.board.delete({
+    where: { id: board.id },
   });
 
   return NextResponse.json({});

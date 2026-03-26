@@ -54,8 +54,19 @@ export default function BoardView({
   }, []); //
 
   async function saveBoard(data: { content: ColumnType; authorId: number }) {
-    // if (boardContent) await axios.patch("/api/boards/" + boardId, data);
-    await axios.post("/api/boards", data);
+    if (boardContent) await axios.patch("/api/boards/" + boardId, data);
+    else await axios.post("/api/boards", data);
+  }
+
+  async function saveTask(
+    id: number,
+    data: {
+      content?: string;
+      group?: string;
+      authorId?: number;
+    },
+  ) {
+    await axios.patch("/api/tasks/" + id, data);
   }
 
   return (
@@ -79,11 +90,15 @@ export default function BoardView({
           }
           return;
         }
+        if (source) {
+          if (source.type === "column") {
+            setColumnOrder((columns) => move(columns, event));
+          }
+          const taskId = parseInt(source.id.toString());
+          const sourceColumn = source.element!.getAttribute("data-column");
 
-        if (source?.type === "column") {
-          setColumnOrder((columns) => move(columns, event));
+          if (sourceColumn !== null) saveTask(taskId, { group: sourceColumn });
         }
-
         saveBoard({ content: columns, authorId: boardAuthorId });
       }}
     >

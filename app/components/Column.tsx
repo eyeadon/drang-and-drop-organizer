@@ -2,15 +2,13 @@ import { CollisionPriority } from "@dnd-kit/abstract";
 import { useSortable } from "@dnd-kit/react/sortable";
 import type { ReactNode } from "react";
 
-export default function Column({
-  children,
-  id,
-  index,
-}: {
+interface Props {
   children: ReactNode;
   id: string;
   index: number;
-}) {
+}
+
+export default function Column({ children, id, index }: Props) {
   const { ref, isDropTarget } = useSortable({
     id,
     index,

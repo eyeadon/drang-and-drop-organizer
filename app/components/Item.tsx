@@ -1,17 +1,14 @@
 import { useSortable } from "@dnd-kit/react/sortable";
 import { ReactNode } from "react";
 
-export default function Item({
-  id,
-  index,
-  column,
-  children,
-}: {
+interface Props {
   id: number;
   index: number;
   column: string;
   children: ReactNode;
-}) {
+}
+
+export default function Item({ id, index, column, children }: Props) {
   const { ref, isDragging, isDropping, isDragSource } = useSortable({
     id,
     index,
@@ -27,6 +24,7 @@ export default function Item({
       data-dragging={isDragging}
       data-dropping={isDropping}
       data-index={index}
+      data-column={column}
     >
       {children}
     </button>
