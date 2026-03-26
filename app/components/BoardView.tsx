@@ -5,14 +5,18 @@ import { move } from "@dnd-kit/helpers";
 import "../App.css";
 import Column from "./Column";
 import Item from "./Item";
-import { Task } from "../generated/prisma/client";
+import { Board, Task } from "../generated/prisma/client";
 import axios from "axios";
 
 export interface ColumnType {
   [key: string]: Task[];
 }
 
-export default function Board() {
+export default function BoardView({
+  id: boardId,
+  content: boardContent,
+  authorId: boardAuthorId,
+}: Board) {
   let startingColumns: ColumnType = {
     A: [],
     B: [],
@@ -49,16 +53,9 @@ export default function Board() {
     fetchData();
   }, []); //
 
-  async function saveTask(
-    id: number,
-    data: {
-      content?: string;
-      group?: string;
-      index?: number;
-      authorId?: number;
-    },
-  ) {
-    await axios.patch("/api/tasks/" + id, data);
+  async function saveBoard(data: { content: ColumnType; authorId: number }) {
+    // if (boardContent) await axios.patch("/api/boards/" + boardId, data);
+    await axios.post("/api/boards", data);
   }
 
   return (
@@ -83,19 +80,11 @@ export default function Board() {
           return;
         }
 
-        if (source) {
-          const sourceIndex = source.element!.getAttribute("data-index");
-
-          if (source.type === "item" && sourceIndex !== null) {
-            saveTask(parseInt(source.id.toString()), {
-              index: parseInt(sourceIndex),
-            });
-          }
-
-          if (source.type === "column") {
-            setColumnOrder((columns) => move(columns, event));
-          }
+        if (source?.type === "column") {
+          setColumnOrder((columns) => move(columns, event));
         }
+
+        saveBoard({ content: columns, authorId: boardAuthorId });
       }}
     >
       <div className="ColumnRoot">
