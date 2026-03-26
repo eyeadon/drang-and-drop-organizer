@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import "./App.css";
-import ColumnGroup from "./components/ColumnGroup";
+import Board from "./components/Board";
 import AddTaskForm from "./components/AddTaskForm";
 import { Task } from "./generated/prisma/client";
 
@@ -15,7 +15,7 @@ export default async function Home() {
             <AddTaskForm authorId={1} />
           </div>
           <div className="flex flex-col gap-4 items-center  sm:flex-col">
-            <ColumnGroup />
+            <Board />
           </div>
         </main>
       </div>

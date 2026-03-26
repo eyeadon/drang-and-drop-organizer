@@ -6,14 +6,13 @@ import "../App.css";
 import Column from "./Column";
 import Item from "./Item";
 import { Task } from "../generated/prisma/client";
-import useTasks from "../_hooks/useTasks";
 import axios from "axios";
 
 export interface ColumnType {
   [key: string]: Task[];
 }
 
-export default function ColumnGroup() {
+export default function Board() {
   let startingColumns: ColumnType = {
     A: [],
     B: [],
