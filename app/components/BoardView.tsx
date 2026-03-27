@@ -7,6 +7,7 @@ import Column from "./Column";
 import Item from "./Item";
 import { Board, Prisma, Task } from "../generated/prisma/client";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface Props {
   board: Board;
@@ -17,6 +18,8 @@ export interface ColumnType {
 }
 
 export default function BoardView({ board }: Props) {
+  const router = useRouter();
+
   let startingColumns: ColumnType = {
     A: [
       {
@@ -54,8 +57,14 @@ export default function BoardView({ board }: Props) {
       authorId: number;
     },
   ) {
-    if (board && id !== null) await axios.patch("/api/boards/" + id, data);
-    else await axios.post("/api/boards", data);
+    if (board && id !== null) {
+      await axios.patch("/api/boards/" + id, data);
+    }
+    // create new board
+    else {
+      await axios.post("/api/boards", data);
+      router.refresh();
+    }
   }
 
   console.log(board);
