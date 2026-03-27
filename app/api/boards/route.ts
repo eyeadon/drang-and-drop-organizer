@@ -9,10 +9,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const body = await request.json();
 
-  const { content, authorId } = body;
+  const { name, content, authorId } = body;
 
   const newBoard = await prisma.board.create({
     data: {
+      name,
       content,
       authorId,
     },

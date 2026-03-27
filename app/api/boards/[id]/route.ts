@@ -9,7 +9,7 @@ export async function PATCH(
 
   const body = await request.json();
 
-  const { content, authorId } = body;
+  const { name, content, authorId } = body;
 
   // check that valid user exists
   if (authorId) {
@@ -30,6 +30,7 @@ export async function PATCH(
   const updatedBoard = await prisma.board.update({
     where: { id: board.id },
     data: {
+      name,
       content,
       authorId,
     },
