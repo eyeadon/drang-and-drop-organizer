@@ -14,6 +14,8 @@ export interface ColumnType {
 }
 
 export default function BoardView() {
+  const { data: boards, error: queryError, isLoading } = useBoards();
+
   let userAuthorId = 1;
   let startingColumns: ColumnType = {
     A: [
@@ -36,24 +38,23 @@ export default function BoardView() {
   };
 
   const [columns, setColumns] = useState<ColumnType>(startingColumns);
-  const [boards, setBoards] = useState<Board[]>();
+  // const [boards, setBoards] = useState<Board[]>();
   const previousColumns = useRef(columns);
   const [columnOrder, setColumnOrder] = useState(() => Object.keys(columns));
 
+  // set columns using board content
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get<Board[]>("/api/boards");
         if (response.data.length !== 0)
           setColumns(response.data[0].content as ColumnType);
-        setBoards(response.data);
       } catch (error) {
         console.log(error);
       }
     };
-
     fetchData();
-  }, []); //
+  }, []);
 
   async function saveBoard(data: {
     id: number;
