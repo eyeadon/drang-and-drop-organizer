@@ -5,13 +5,7 @@ import AddTaskForm from "./components/AddTaskForm";
 import { Board, Task } from "./generated/prisma/client";
 
 export default async function Home() {
-  const users = await prisma.user.findMany();
-
-  const board = {
-    id: 1,
-    content: {},
-    authorId: 1,
-  };
+  // const users = await prisma.user.findMany();
 
   return (
     <>
@@ -21,7 +15,7 @@ export default async function Home() {
             <AddTaskForm authorId={1} />
           </div>
           <div className="flex flex-col gap-4 items-center  sm:flex-col">
-            <BoardView id={1} content={null} authorId={1} />
+            <BoardView />
           </div>
         </main>
       </div>

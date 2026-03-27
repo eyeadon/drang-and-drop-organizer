@@ -5,46 +5,48 @@ import { move } from "@dnd-kit/helpers";
 import "../App.css";
 import Column from "./Column";
 import Item from "./Item";
-import { Board, Task } from "../generated/prisma/client";
+import { Board, Prisma, Task } from "../generated/prisma/client";
 import axios from "axios";
+import useBoards from "../_hooks/useBoards";
 
 export interface ColumnType {
   [key: string]: Task[];
 }
 
-export default function BoardView({
-  id: boardId,
-  content: boardContent,
-  authorId: boardAuthorId,
-}: Board) {
+export default function BoardView() {
+  let userAuthorId = 1;
   let startingColumns: ColumnType = {
-    A: [],
+    A: [
+      {
+        id: 1,
+        content: "task1",
+        authorId: 1,
+        group: "A",
+      },
+      {
+        id: 2,
+        content: "task2",
+        authorId: 1,
+        group: "A",
+      },
+    ],
     B: [],
     C: [],
     D: [],
   };
 
   const [columns, setColumns] = useState<ColumnType>(startingColumns);
+  const [boards, setBoards] = useState<Board[]>();
   const previousColumns = useRef(columns);
   const [columnOrder, setColumnOrder] = useState(() => Object.keys(columns));
-
-  function populateStartingColumns(tasks: Task[], startingColumns: ColumnType) {
-    Object.keys(startingColumns).forEach((key) => {
-      tasks.forEach((task) => {
-        if (task.group === key) {
-          startingColumns[key].push(task);
-        }
-      });
-    });
-
-    return startingColumns;
-  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<Task[]>("/api/tasks");
-        setColumns(populateStartingColumns(response.data, startingColumns));
+        const response = await axios.get<Board[]>("/api/boards");
+        if (response.data.length !== 0)
+          setColumns(response.data[0].content as ColumnType);
+        setBoards(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -53,21 +55,18 @@ export default function BoardView({
     fetchData();
   }, []); //
 
-  async function saveBoard(data: { content: ColumnType; authorId: number }) {
-    if (boardContent) await axios.patch("/api/boards/" + boardId, data);
-    else await axios.post("/api/boards", data);
+  async function saveBoard(data: {
+    id: number;
+    content: ColumnType;
+    authorId: number;
+  }) {
+    if (boards && boards.length !== 0)
+      await axios.patch("/api/boards/" + data.id, data);
+    else if (boards) await axios.post("/api/boards", data);
   }
 
-  async function saveTask(
-    id: number,
-    data: {
-      content?: string;
-      group?: string;
-      authorId?: number;
-    },
-  ) {
-    await axios.patch("/api/tasks/" + id, data);
-  }
+  console.log("boards: ", boards);
+  console.log("columns: ", columns);
 
   return (
     <DragDropProvider
@@ -90,16 +89,16 @@ export default function BoardView({
           }
           return;
         }
-        if (source) {
-          if (source.type === "column") {
-            setColumnOrder((columns) => move(columns, event));
-          }
-          const taskId = parseInt(source.id.toString());
-          const sourceColumn = source.element!.getAttribute("data-column");
 
-          if (sourceColumn !== null) saveTask(taskId, { group: sourceColumn });
+        if (source?.type === "column") {
+          setColumnOrder((columns) => move(columns, event));
         }
-        saveBoard({ content: columns, authorId: boardAuthorId });
+
+        saveBoard({
+          id: 1,
+          content: columns,
+          authorId: userAuthorId,
+        });
       }}
     >
       <div className="ColumnRoot">
