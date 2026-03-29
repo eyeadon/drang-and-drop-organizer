@@ -1,64 +1,112 @@
+"use client";
 import Form from "next/form";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { Board, Task } from "../generated/prisma/client";
+import BoardView, { ColumnType } from "./BoardView";
+import { saveBoard } from "../functions";
+import axios from "axios";
 
 interface Props {
   authorId: number;
+  columns: ColumnType;
+  handleUpdateColumn: (newTask: Task, columnKey: string) => void;
 }
 
-export default function AddTaskForm({ authorId }: Props) {
+export default function AddTaskForm({
+  authorId,
+  columns,
+  handleUpdateColumn,
+}: Props) {
+  const router = useRouter();
+
   async function createTask(formData: FormData) {
-    "use server";
     const content = formData.get("content") as string;
     const group = formData.get("group") as string;
 
-    await prisma.task.create({
-      data: {
+    async function createTask(data: {
+      content: string;
+      group: string;
+      authorId: number;
+    }) {
+      try {
+        return await axios.post<Task>("/api/tasks", data);
+      } catch (error) {
+        console.error("Error posting data:", error);
+      }
+    }
+
+    async function addNewTaskToBoard() {
+      const response = await createTask({
         content,
         group,
         authorId,
-      },
-    });
+      });
 
-    revalidatePath("/");
-    redirect("/");
+      console.log("createTask response: ", response);
+      console.log("columns 1: ", columns);
+
+      if (response) {
+        for (const [key] of Object.entries(columns)) {
+          if (key === group) {
+            handleUpdateColumn(response.data, key);
+          }
+        }
+      }
+    }
+    async function updateBoard() {
+      await addNewTaskToBoard();
+
+      saveBoard(
+        1,
+        {
+          name: "board1",
+          content: columns,
+          authorId: 1,
+        },
+        router,
+      );
+      console.log("columns 2: ", columns);
+    }
+
+    updateBoard();
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <Form action={createTask} className="space-y-6">
-        <div>
-          <label htmlFor="content" className="block text-black text-lg mb-2">
-            Task
-          </label>
-          <textarea
-            id="content"
-            name="content"
-            placeholder="Task..."
-            rows={1}
-            className="w-full px-4 py-2 border rounded-lg bg-white"
-          />
-        </div>
-        <div>
-          <label htmlFor="group" className="block text-black text-lg mb-2">
-            Group
-          </label>
-          <textarea
-            id="group"
-            name="group"
-            placeholder="Group..."
-            rows={1}
-            className="w-full px-4 py-2 border rounded-lg bg-white"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
-        >
-          Add Task
-        </button>
-      </Form>
-    </div>
+    <>
+      <div className="max-w-2xl mx-auto p-4">
+        <Form action={createTask} className="space-y-6">
+          <div>
+            <label htmlFor="content" className="block text-black text-lg mb-2">
+              Task
+            </label>
+            <textarea
+              id="content"
+              name="content"
+              placeholder="Task..."
+              rows={1}
+              className="w-full px-4 py-2 border rounded-lg bg-white"
+            />
+          </div>
+          <div>
+            <label htmlFor="group" className="block text-black text-lg mb-2">
+              Group
+            </label>
+            <textarea
+              id="group"
+              name="group"
+              placeholder="Group..."
+              rows={1}
+              className="w-full px-4 py-2 border rounded-lg bg-white"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
+          >
+            Add Task
+          </button>
+        </Form>
+      </div>
+    </>
   );
 }
