@@ -19,7 +19,7 @@ export function columnTasksToStrings(cols: ColumnType) {
 }
 
 export async function saveBoard(
-  boardId: number,
+  boardId: number | null,
   data: {
     name: string;
     content: ColumnType;

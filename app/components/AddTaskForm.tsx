@@ -8,12 +8,14 @@ import axios from "axios";
 
 interface Props {
   authorId: number;
+  board: Board;
   columns: ColumnType;
   handleUpdateColumn: (newTask: Task, columnKey: string) => void;
 }
 
 export default function AddTaskForm({
   authorId,
+  board,
   columns,
   handleUpdateColumn,
 }: Props) {
@@ -47,17 +49,18 @@ export default function AddTaskForm({
 
       if (response) {
         for (const [key] of Object.entries(columns)) {
-          if (key === group) {
+          if (key === response.data.group) {
             handleUpdateColumn(response.data, key);
           }
         }
       }
     }
+
     async function updateBoard() {
       await addNewTaskToBoard();
 
       saveBoard(
-        1,
+        board ? board.id : null,
         {
           name: "board1",
           content: columns,

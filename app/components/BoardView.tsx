@@ -62,6 +62,7 @@ export default function BoardView({ authorId, board }: Props) {
     <>
       <AddTaskForm
         authorId={authorId}
+        board={board}
         columns={columns}
         handleUpdateColumn={handleUpdateColumn}
       />
@@ -92,7 +93,7 @@ export default function BoardView({ authorId, board }: Props) {
           }
 
           saveBoard(
-            board.id,
+            board ? board.id : null,
             {
               name: "board1",
               content: columns,
