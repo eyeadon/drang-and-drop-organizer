@@ -2,13 +2,14 @@
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "../App.css";
 import { saveBoard } from "../functions";
 import { Board, Task } from "../generated/prisma/client";
 import AddTaskForm from "./AddTaskForm";
 import Column from "./Column";
 import Item from "./Item";
+import { createContext } from "react";
 
 interface Props {
   authorId: number;
@@ -18,6 +19,21 @@ interface Props {
 export interface ColumnType {
   [key: string]: Task[];
 }
+
+interface ColumnContextType {
+  columns: ColumnType;
+  handleUpdateColumn: (newTask: Task, columnKey: string) => void;
+}
+
+export const ColumnContext = createContext<ColumnContextType | null>(null);
+
+export const useColumnContext = () => {
+  const context = useContext(ColumnContext);
+  if (!context) {
+    throw new Error("ColumnContext is null");
+  }
+  return context;
+};
 
 export default function BoardView({ authorId, board }: Props) {
   const router = useRouter();
@@ -60,12 +76,14 @@ export default function BoardView({ authorId, board }: Props) {
 
   return (
     <>
-      <AddTaskForm
-        authorId={authorId}
-        board={board}
-        columns={columns}
-        handleUpdateColumn={handleUpdateColumn}
-      />
+      <ColumnContext value={{ columns, handleUpdateColumn }}>
+        <AddTaskForm
+          authorId={authorId}
+          board={board}
+          // columns={columns}
+          // handleUpdateColumn={handleUpdateColumn}
+        />
+      </ColumnContext>
 
       <DragDropProvider
         onDragStart={() => {

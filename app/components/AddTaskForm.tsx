@@ -2,24 +2,27 @@
 import Form from "next/form";
 import { redirect, useRouter } from "next/navigation";
 import { Board, Task } from "../generated/prisma/client";
-import BoardView, { ColumnType } from "./BoardView";
+import { ColumnType, ColumnContext, useColumnContext } from "./BoardView";
 import { saveBoard } from "../functions";
 import axios from "axios";
+import { useContext } from "react";
 
 interface Props {
   authorId: number;
   board: Board;
-  columns: ColumnType;
-  handleUpdateColumn: (newTask: Task, columnKey: string) => void;
+  // columns: ColumnType;
+  // handleUpdateColumn: (newTask: Task, columnKey: string) => void;
 }
 
 export default function AddTaskForm({
   authorId,
   board,
-  columns,
-  handleUpdateColumn,
+  // columns,
+  // handleUpdateColumn,
 }: Props) {
   const router = useRouter();
+
+  const { columns, handleUpdateColumn } = useColumnContext();
 
   async function createTask(formData: FormData) {
     const content = formData.get("content") as string;
