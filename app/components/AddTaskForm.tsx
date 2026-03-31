@@ -1,10 +1,10 @@
 "use client";
-import Form from "next/form";
-import { redirect, useRouter } from "next/navigation";
-import { Board, Task } from "../generated/prisma/client";
-import BoardView, { ColumnType } from "./BoardView";
-import { saveBoard } from "../functions";
 import axios from "axios";
+import Form from "next/form";
+import { useRouter } from "next/navigation";
+import { saveBoard } from "../functions";
+import { Board, Task } from "../generated/prisma/client";
+import { ColumnType } from "./BoardView";
 
 interface Props {
   authorId: number;
@@ -64,7 +64,7 @@ export default function AddTaskForm({
         {
           name: "board1",
           content: columns,
-          authorId: 1,
+          authorId,
         },
         router,
       );

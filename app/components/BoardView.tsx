@@ -23,20 +23,7 @@ export default function BoardView({ authorId, board }: Props) {
   const router = useRouter();
 
   let startingColumns: ColumnType = {
-    A: [
-      {
-        id: 1,
-        content: "task1",
-        authorId,
-        group: "A",
-      },
-      {
-        id: 2,
-        content: "task2",
-        authorId,
-        group: "A",
-      },
-    ],
+    A: [],
     B: [],
     C: [],
     D: [],
@@ -53,7 +40,7 @@ export default function BoardView({ authorId, board }: Props) {
 
   const handleUpdateColumn = (newTask: Task, columnKey: string) => {
     setColumns((prevColumns) => {
-      let updatedArray = [...prevColumns[columnKey], newTask];
+      const updatedArray = [...prevColumns[columnKey], newTask];
 
       return { ...prevColumns, [columnKey]: updatedArray };
     });
