@@ -49,7 +49,7 @@ export default function AddTaskForm({
 
       if (response) {
         for (const [key] of Object.entries(columns)) {
-          if (key === response.data.group) {
+          if (key === group) {
             handleUpdateColumn(response.data, key);
           }
         }
