@@ -53,8 +53,9 @@ export default function BoardView({ authorId, board }: Props) {
 
   const handleUpdateColumn = (newTask: Task, columnKey: string) => {
     setColumns((prevColumns) => {
-      prevColumns[columnKey].push(newTask);
-      return prevColumns;
+      let updatedArray = [...prevColumns[columnKey], newTask];
+
+      return { ...prevColumns, [columnKey]: updatedArray };
     });
   };
 
