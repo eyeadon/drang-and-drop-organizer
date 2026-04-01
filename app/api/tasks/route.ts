@@ -9,12 +9,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const body = await request.json();
 
-  const { content, group, authorId } = body;
+  const { content, authorId } = body;
 
   const newTask = await prisma.task.create({
     data: {
       content,
-      group,
       authorId,
     },
   });

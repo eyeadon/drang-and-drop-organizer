@@ -18,11 +18,9 @@ const userData: Prisma.UserCreateInput[] = [
       create: [
         {
           content: "Alice Task 1",
-          group: "A",
         },
         {
           content: "Alice Task 2",
-          group: "A",
         },
       ],
     },
@@ -34,11 +32,9 @@ const userData: Prisma.UserCreateInput[] = [
       create: [
         {
           content: "Bob Task 1",
-          group: "B",
         },
         {
           content: "Bob Task 2",
-          group: "B",
         },
       ],
     },

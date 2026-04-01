@@ -9,7 +9,7 @@ export async function PATCH(
 
   const body = await request.json();
 
-  const { content, group, authorId } = body;
+  const { content, authorId } = body;
 
   // check that valid user exists
   if (authorId) {
@@ -31,7 +31,6 @@ export async function PATCH(
     where: { id: task.id },
     data: {
       content,
-      group,
       authorId,
     },
   });

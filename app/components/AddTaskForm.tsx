@@ -25,11 +25,7 @@ export default function AddTaskForm({
     const content = formData.get("content") as string;
     const group = formData.get("group") as string;
 
-    async function createTask(data: {
-      content: string;
-      group: string;
-      authorId: number;
-    }) {
+    async function createTask(data: { content: string; authorId: number }) {
       try {
         return await axios.post<Task>("/api/tasks", data);
       } catch (error) {
@@ -40,7 +36,6 @@ export default function AddTaskForm({
     async function addNewTaskToBoard() {
       const response = await createTask({
         content,
-        group,
         authorId,
       });
 
@@ -92,7 +87,7 @@ export default function AddTaskForm({
           </div>
           <div>
             <label htmlFor="group" className="block text-black text-lg mb-2">
-              Group
+              Starting Group
             </label>
             <textarea
               id="group"
