@@ -18,6 +18,10 @@ export function columnTasksToStrings(cols: ColumnType) {
   return updatedColumns;
 }
 
+export function capitalizeFirstLetter(string: string | undefined) {
+  return string ? string.charAt(0).toUpperCase() + string.slice(1) : "";
+}
+
 export async function saveBoard(
   boardId: number | null,
   data: {

@@ -48,61 +48,70 @@ export default function BoardView({ authorId, board }: Props) {
 
   return (
     <>
-      <AddTaskForm
-        authorId={authorId}
-        board={board}
-        columns={columns}
-        handleUpdateColumn={handleUpdateColumn}
-      />
+      <div className="flex flex-col gap-4 items-center sm:flex-col">
+        <AddTaskForm
+          authorId={authorId}
+          board={board}
+          columns={columns}
+          handleUpdateColumn={handleUpdateColumn}
+        />
+      </div>
 
-      <DragDropProvider
-        onDragStart={() => {
-          previousColumns.current = columns;
-        }}
-        onDragOver={(event) => {
-          const { source } = event.operation;
+      <div className="flex flex-col gap-4 items-center sm:flex-col">
+        <DragDropProvider
+          onDragStart={() => {
+            previousColumns.current = columns;
+          }}
+          onDragOver={(event) => {
+            const { source } = event.operation;
 
-          if (source?.type === "column") return;
+            if (source?.type === "column") return;
 
-          setColumns((columns) => move(columns, event));
-        }}
-        onDragEnd={(event) => {
-          const { source } = event.operation;
+            setColumns((columns) => move(columns, event));
+          }}
+          onDragEnd={(event) => {
+            const { source } = event.operation;
 
-          if (event.canceled) {
-            if (source?.type === "item") {
-              setColumns(previousColumns.current);
+            if (event.canceled) {
+              if (source?.type === "item") {
+                setColumns(previousColumns.current);
+              }
+              return;
             }
-            return;
-          }
 
-          if (source?.type === "column") {
-            setColumnOrder((columns) => move(columns, event));
-          }
+            if (source?.type === "column") {
+              setColumnOrder((columns) => move(columns, event));
+            }
 
-          saveBoard(
-            board ? board.id : null,
-            {
-              name: "board1",
-              content: columns,
-              authorId,
-            },
-            router,
-          );
-        }}
-      >
-        <div className="ColumnRoot">
-          {columnOrder.map((column, columnIndex) => (
-            <Column key={column} id={column} index={columnIndex}>
-              {columns[column].map((task, index) => (
-                <Item key={task.id} id={task.id} index={index} column={column}>
-                  {task.content}
-                </Item>
-              ))}
-            </Column>
-          ))}
-        </div>
-      </DragDropProvider>
+            saveBoard(
+              board ? board.id : null,
+              {
+                name: "board1",
+                content: columns,
+                authorId,
+              },
+              router,
+            );
+          }}
+        >
+          <div className="ColumnRoot">
+            {columnOrder.map((column, columnIndex) => (
+              <Column key={column} id={column} index={columnIndex}>
+                {columns[column].map((task, index) => (
+                  <Item
+                    key={task.id}
+                    id={task.id}
+                    index={index}
+                    column={column}
+                  >
+                    {task.content}
+                  </Item>
+                ))}
+              </Column>
+            ))}
+          </div>
+        </DragDropProvider>
+      </div>
     </>
   );
 }
