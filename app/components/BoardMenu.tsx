@@ -36,11 +36,7 @@ const BoardMenu = ({ boards, authorId }: Props) => {
       {selectedBoard ? (
         <BoardView authorId={authorId} board={selectedBoard} />
       ) : (
-        <div className="ColumnRoot">
-          <div className="Column"></div>
-          <div className="Column"></div>
-          <div className="Column"></div>
-        </div>
+        <BoardView authorId={authorId} board={null} />
       )}
     </>
   );

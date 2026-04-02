@@ -12,7 +12,7 @@ import Item from "./Item";
 
 interface Props {
   authorId: number;
-  board: Board;
+  board: Board | null;
 }
 
 export interface ColumnType {

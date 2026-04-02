@@ -8,7 +8,7 @@ import { ColumnType } from "./BoardView";
 
 interface Props {
   authorId: number;
-  board: Board;
+  board: Board | null;
   columns: ColumnType;
   handleUpdateColumn: (newTask: Task, columnKey: string) => void;
 }
