@@ -39,9 +39,6 @@ export default function AddTaskForm({
         authorId,
       });
 
-      console.log("createTask response: ", response);
-      console.log("columns 1: ", columns);
-
       if (response) {
         for (const [key] of Object.entries(columns)) {
           if (key === group) {
@@ -63,7 +60,6 @@ export default function AddTaskForm({
         },
         router,
       );
-      console.log("columns 2: ", columns);
     }
 
     updateBoard();

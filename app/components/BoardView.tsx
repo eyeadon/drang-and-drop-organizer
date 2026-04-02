@@ -9,6 +9,7 @@ import { Board, Task } from "../generated/prisma/client";
 import AddTaskForm from "./AddTaskForm";
 import Column from "./Column";
 import Item from "./Item";
+import BoardName from "./BoardName";
 
 interface Props {
   authorId: number;
@@ -21,6 +22,7 @@ export interface ColumnType {
 
 export default function BoardView({ authorId, board }: Props) {
   const router = useRouter();
+  console.log("BoardView ", board);
 
   let startingColumns: ColumnType = {
     A: [],
@@ -36,7 +38,7 @@ export default function BoardView({ authorId, board }: Props) {
   // set starting columns using board content
   useEffect(() => {
     if (board) setColumns(board.content as ColumnType);
-  }, []);
+  }, [board]);
 
   const handleUpdateColumn = (newTask: Task, columnKey: string) => {
     setColumns((prevColumns) => {
@@ -48,6 +50,9 @@ export default function BoardView({ authorId, board }: Props) {
 
   return (
     <>
+      <div className="flex flex-col gap-4 items-center sm:flex-col">
+        <BoardName boardName={board?.name} />
+      </div>
       <div className="flex flex-col gap-4 items-center sm:flex-col">
         <AddTaskForm
           authorId={authorId}
