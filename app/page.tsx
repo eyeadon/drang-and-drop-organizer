@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
+import { notFound } from "next/navigation";
 import "./App.css";
-import BoardView from "./components/BoardView";
-import { Board, User } from "./generated/prisma/client";
 import BoardMenu from "./components/BoardMenu";
 
 export default async function Home() {
@@ -13,7 +12,9 @@ export default async function Home() {
     include: { boards: true },
   });
 
-  const startingBoards = user!.boards;
+  if (!user) notFound();
+
+  const startingBoards = user.boards;
   console.log(startingBoards);
 
   return (
