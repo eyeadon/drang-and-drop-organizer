@@ -50,7 +50,7 @@ export default function BoardView({ authorId, board }: Props) {
 
   return (
     <>
-      <div className="flex flex-col gap-4 items-center sm:flex-col">
+      <div className="flex flex-col gap-4 items-start sm:flex-col">
         <BoardName boardName={board?.name} />
       </div>
       <div className="flex flex-col gap-4 items-center sm:flex-col">

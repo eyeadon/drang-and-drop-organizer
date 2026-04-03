@@ -14,11 +14,12 @@ const BoardMenu = ({ boards, authorId }: Props) => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 items-center sm:flex-col">
+      {/* TODO: fix or remove div flex classes */}
+      <div className="flex flex-col gap-4 items-center">
         {boards.map((board) => (
           <span
             key={board.id}
-            className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+            className="inline-block bg-blue-200 rounded-full border-2 border-indigo-500 px-3 py-1 text-md font-semibold text-blue-950 mr-2 mb-2"
           >
             <a
               href="#"
