@@ -9,13 +9,13 @@ export default async function Home() {
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    include: { boards: true },
+    include: { boards: { orderBy: { name: "asc" } } },
   });
 
   if (!user) notFound();
 
   const startingBoards = user.boards;
-  console.log(startingBoards);
+  // console.log(startingBoards);
 
   return (
     <>

@@ -98,15 +98,13 @@ export default function BoardView({
               setColumnOrder((columns) => move(columns, event));
             }
 
-            saveBoard(
-              board ? board.id : null,
-              {
-                name: board ? board.name : "Untitled Board",
-                content: columns,
-                authorId,
-              },
-              router,
-            );
+            saveBoard(board ? board.id : null, {
+              name: board ? board.name : "Untitled Board",
+              content: columns,
+              authorId,
+            });
+
+            router.refresh();
           }}
         >
           <div className="ColumnRoot">

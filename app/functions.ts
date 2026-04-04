@@ -29,18 +29,17 @@ export async function saveBoard(
     content?: ColumnType;
     authorId?: number;
   },
-  router: AppRouterInstance,
 ) {
   try {
     if (boardId !== null) {
       const result = await axios.patch<Board>("/api/boards/" + boardId, data);
-      router.refresh();
+      // router.refresh();
       return result;
     }
     // create new board
     else {
       const result = await axios.post<Board>("/api/boards", data);
-      router.refresh();
+      // router.refresh();
       return result;
     }
   } catch (error) {

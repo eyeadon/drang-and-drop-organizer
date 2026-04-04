@@ -20,17 +20,15 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
   async function editBoardName(formData: FormData) {
     const newName = formData.get("boardName") as string;
 
-    const response = await saveBoard(
-      board ? board.id : null,
-      {
-        name: newName,
-        content: columns,
-        authorId,
-      },
-      router,
-    );
+    const response = await saveBoard(board ? board.id : null, {
+      name: newName,
+      content: columns,
+      authorId,
+    });
 
     if (response) handleUpdateBoard(response.data as Board);
+
+    router.refresh();
   }
 
   return (

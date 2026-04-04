@@ -25,7 +25,7 @@ export default function AddTaskForm({
     const content = formData.get("content") as string;
     const group = formData.get("group") as string;
 
-    async function createTask(data: { content: string; authorId: number }) {
+    async function postTask(data: { content: string; authorId: number }) {
       try {
         return await axios.post<Task>("/api/tasks", data);
       } catch (error) {
@@ -34,7 +34,7 @@ export default function AddTaskForm({
     }
 
     async function addNewTaskToBoard() {
-      const response = await createTask({
+      const response = await postTask({
         content,
         authorId,
       });
@@ -51,18 +51,15 @@ export default function AddTaskForm({
     async function updateBoard() {
       await addNewTaskToBoard();
 
-      saveBoard(
-        board ? board.id : null,
-        {
-          name: board ? board.name : "Untitled Board",
-          content: columns,
-          authorId,
-        },
-        router,
-      );
+      saveBoard(board ? board.id : null, {
+        name: board ? board.name : "Untitled Board",
+        content: columns,
+        authorId,
+      });
     }
 
     updateBoard();
+    router.refresh();
   }
 
   return (
