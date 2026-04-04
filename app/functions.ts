@@ -25,21 +25,23 @@ export function capitalizeFirstLetter(string: string | undefined) {
 export async function saveBoard(
   boardId: number | null,
   data: {
-    name: string;
-    content: ColumnType;
-    authorId: number;
+    name?: string;
+    content?: ColumnType;
+    authorId?: number;
   },
   router: AppRouterInstance,
 ) {
   try {
     if (boardId !== null) {
-      await axios.patch("/api/boards/" + boardId, data);
+      const result = await axios.patch<Board>("/api/boards/" + boardId, data);
       router.refresh();
+      return result;
     }
     // create new board
     else {
-      await axios.post("/api/boards", data);
+      const result = await axios.post<Board>("/api/boards", data);
       router.refresh();
+      return result;
     }
   } catch (error) {
     console.error("Error patching or posting data:", error);

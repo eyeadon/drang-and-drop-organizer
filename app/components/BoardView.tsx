@@ -14,13 +14,18 @@ import BoardName from "./BoardName";
 interface Props {
   authorId: number;
   board: Board | null;
+  handleUpdateBoard: (board: Board | undefined) => void;
 }
 
 export interface ColumnType {
   [key: string]: Task[];
 }
 
-export default function BoardView({ authorId, board }: Props) {
+export default function BoardView({
+  authorId,
+  board,
+  handleUpdateBoard,
+}: Props) {
   const router = useRouter();
   console.log("BoardView ", board);
 
@@ -51,7 +56,12 @@ export default function BoardView({ authorId, board }: Props) {
   return (
     <>
       <div className="flex flex-col gap-4 items-start sm:flex-col">
-        <BoardName boardName={board?.name} />
+        <BoardName
+          authorId={authorId}
+          board={board}
+          columns={columns}
+          handleUpdateBoard={handleUpdateBoard}
+        />
       </div>
       <div className="flex flex-col gap-4 items-center sm:flex-col">
         <AddTaskForm
@@ -91,7 +101,7 @@ export default function BoardView({ authorId, board }: Props) {
             saveBoard(
               board ? board.id : null,
               {
-                name: "board1",
+                name: board ? board.name : "Untitled Board",
                 content: columns,
                 authorId,
               },

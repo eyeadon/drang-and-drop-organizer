@@ -54,7 +54,7 @@ export default function AddTaskForm({
       saveBoard(
         board ? board.id : null,
         {
-          name: "board1",
+          name: board ? board.name : "Untitled Board",
           content: columns,
           authorId,
         },
@@ -95,7 +95,7 @@ export default function AddTaskForm({
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
+            className="cursor-pointer w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
           >
             Add Task
           </button>

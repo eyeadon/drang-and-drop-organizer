@@ -12,10 +12,13 @@ interface Props {
 const BoardMenu = ({ boards, authorId }: Props) => {
   const [selectedBoard, setSelectedBoard] = useState<Board | undefined>();
 
+  const handleUpdateBoard = (board: Board | undefined) => {
+    setSelectedBoard(board);
+  };
+
   return (
     <>
-      {/* TODO: fix or remove div flex classes */}
-      <div className="flex flex-col gap-4 items-center">
+      <div className="">
         {boards.map((board) => (
           <span
             key={board.id}
@@ -35,9 +38,17 @@ const BoardMenu = ({ boards, authorId }: Props) => {
       </div>
 
       {selectedBoard ? (
-        <BoardView authorId={authorId} board={selectedBoard} />
+        <BoardView
+          authorId={authorId}
+          board={selectedBoard}
+          handleUpdateBoard={handleUpdateBoard}
+        />
       ) : (
-        <BoardView authorId={authorId} board={null} />
+        <BoardView
+          authorId={authorId}
+          board={null}
+          handleUpdateBoard={handleUpdateBoard}
+        />
       )}
     </>
   );
