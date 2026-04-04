@@ -16,9 +16,12 @@ interface Props {
 const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
   const router = useRouter();
   const [formDisplay, setFormDisplay] = useState(false);
+  const [isSubmitting, setSubmitting] = useState(false);
 
   async function editBoardName(formData: FormData) {
     const newName = formData.get("boardName") as string;
+
+    setSubmitting(true);
 
     const response = await saveBoard(board ? board.id : null, {
       name: newName,
@@ -29,6 +32,8 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
     if (response) handleUpdateBoard(response.data as Board);
 
     router.refresh();
+    setFormDisplay(false);
+    setSubmitting(false);
   }
 
   return (
@@ -50,7 +55,8 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
             />
             <button
               type="submit"
-              className="cursor-pointer border border-blue-600 bg-blue-500 text-white text-lg rounded-lg px-3 py-2 mr-2 mb-2 hover:bg-blue-600 hover:border-blue-600"
+              className="cursor-pointer border border-blue-600 bg-blue-500 text-white text-lg rounded-lg px-3 py-2 mr-2 mb-2 hover:bg-blue-600 hover:border-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:pointer-events-none"
+              disabled={isSubmitting}
             >
               Save
             </button>
