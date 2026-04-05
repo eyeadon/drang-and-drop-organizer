@@ -2,7 +2,6 @@
 import axios from "axios";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
-import { saveBoard } from "../functions";
 import { Board, Task } from "../generated/prisma/client";
 import { ColumnType } from "./BoardView";
 

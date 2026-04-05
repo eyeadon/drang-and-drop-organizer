@@ -116,7 +116,7 @@ export default function BoardView({
               authorId,
             });
 
-            router.refresh();
+            // router.refresh();
           }}
         >
           <div className="ColumnRoot">

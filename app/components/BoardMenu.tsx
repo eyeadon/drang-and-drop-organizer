@@ -2,6 +2,7 @@
 import { ReactNode, useState } from "react";
 import { Board } from "../generated/prisma/client";
 import BoardView from "./BoardView";
+import { useRouter } from "next/navigation";
 
 interface Props {
   boards: Board[];
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const BoardMenu = ({ boards, authorId }: Props) => {
+  const router = useRouter();
   const [selectedBoard, setSelectedBoard] = useState<Board | undefined>();
 
   const handleUpdateBoard = (board: Board | undefined) => {
@@ -31,6 +33,7 @@ const BoardMenu = ({ boards, authorId }: Props) => {
               onClick={(event) => {
                 event.preventDefault();
                 setSelectedBoard(board);
+                router.refresh();
               }}
             >
               {board.name}
