@@ -98,6 +98,8 @@ export default function BoardView({
               setColumnOrder((columns) => move(columns, event));
             }
 
+            console.log("BoardView board ", board);
+
             saveBoard(board ? board.id : null, {
               name: board ? board.name : "Untitled Board",
               content: columns,

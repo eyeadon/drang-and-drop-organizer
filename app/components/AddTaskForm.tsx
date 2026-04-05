@@ -39,17 +39,25 @@ export default function AddTaskForm({
         authorId,
       });
 
-      if (response) {
+      // may not be columns yet to save
+
+      if (response?.data) {
         for (const [key] of Object.entries(columns)) {
           if (key === group) {
             handleUpdateColumn(response.data, key);
           }
         }
       }
+
+      router.refresh();
     }
 
     async function updateBoard() {
+      console.log("AddTaskForm columns ", columns);
+
       await addNewTaskToBoard();
+
+      console.log("AddTaskForm board ", board);
 
       saveBoard(board ? board.id : null, {
         name: board ? board.name : "Untitled Board",

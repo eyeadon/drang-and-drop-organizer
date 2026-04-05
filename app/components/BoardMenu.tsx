@@ -16,6 +16,8 @@ const BoardMenu = ({ boards, authorId }: Props) => {
     setSelectedBoard(board);
   };
 
+  console.log("BoardMenu selectedBoard ", selectedBoard);
+
   return (
     <>
       <div className="">
