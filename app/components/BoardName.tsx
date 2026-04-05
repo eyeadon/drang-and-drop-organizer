@@ -23,8 +23,6 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
 
     setSubmitting(true);
 
-    console.log("BoardName board ", board);
-
     const response = await saveBoard(board ? board.id : null, {
       name: newName,
       content: columns,

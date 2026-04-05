@@ -61,6 +61,8 @@ export default function BoardView({
     console.log("saveBoard response: ", response);
 
     if (response?.data) handleUpdateBoard(response.data);
+
+    router.refresh();
   };
 
   return (
