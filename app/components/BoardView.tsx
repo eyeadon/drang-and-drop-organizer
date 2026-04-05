@@ -44,7 +44,7 @@ export default function BoardView({
     if (board) setColumns(board.content as ColumnType);
   }, [board]);
 
-  const handleUpdateColumn = (newTask: Task, columnKey: string) => {
+  const handleUpdateColumn = async (newTask: Task, columnKey: string) => {
     const updatedArray = [...columns[columnKey], newTask];
     const updatedColumns = { ...columns, [columnKey]: updatedArray };
 
@@ -52,11 +52,15 @@ export default function BoardView({
 
     console.log("updated columns: ", updatedColumns);
 
-    saveBoard(board ? board.id : null, {
+    const response = await saveBoard(board ? board.id : null, {
       name: board ? board.name : "Untitled Board",
       content: updatedColumns,
       authorId,
     });
+
+    console.log("saveBoard response: ", response);
+
+    if (response?.data) handleUpdateBoard(response.data);
   };
 
   return (
