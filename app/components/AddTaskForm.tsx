@@ -48,25 +48,9 @@ export default function AddTaskForm({
           }
         }
       }
-
-      router.refresh();
     }
 
-    async function updateBoard() {
-      console.log("AddTaskForm columns ", columns);
-
-      await addNewTaskToBoard();
-
-      console.log("AddTaskForm board ", board);
-
-      saveBoard(board ? board.id : null, {
-        name: board ? board.name : "Untitled Board",
-        content: columns,
-        authorId,
-      });
-    }
-
-    updateBoard();
+    addNewTaskToBoard();
     router.refresh();
   }
 

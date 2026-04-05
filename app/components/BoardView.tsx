@@ -27,7 +27,6 @@ export default function BoardView({
   handleUpdateBoard,
 }: Props) {
   const router = useRouter();
-  console.log("BoardView ", board);
 
   let startingColumns: ColumnType = {
     A: [],
@@ -46,10 +45,17 @@ export default function BoardView({
   }, [board]);
 
   const handleUpdateColumn = (newTask: Task, columnKey: string) => {
-    setColumns((prevColumns) => {
-      const updatedArray = [...prevColumns[columnKey], newTask];
+    const updatedArray = [...columns[columnKey], newTask];
+    const updatedColumns = { ...columns, [columnKey]: updatedArray };
 
-      return { ...prevColumns, [columnKey]: updatedArray };
+    setColumns(updatedColumns);
+
+    console.log("updated columns: ", updatedColumns);
+
+    saveBoard(board ? board.id : null, {
+      name: board ? board.name : "Untitled Board",
+      content: updatedColumns,
+      authorId,
     });
   };
 
@@ -97,8 +103,6 @@ export default function BoardView({
             if (source?.type === "column") {
               setColumnOrder((columns) => move(columns, event));
             }
-
-            console.log("BoardView board ", board);
 
             saveBoard(board ? board.id : null, {
               name: board ? board.name : "Untitled Board",
