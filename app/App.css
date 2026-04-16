@@ -298,9 +298,14 @@
 }
 
 .Item {
-  appearance: none;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  /* appearance: none; */
   background: #fff;
-  color: #666;
+  color: #404040;
   padding: 12px 20px;
   border: none;
   border-radius: 5px;
