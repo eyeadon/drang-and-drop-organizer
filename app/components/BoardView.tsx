@@ -44,14 +44,7 @@ export default function BoardView({
     if (board) setColumns(board.content as ColumnType);
   }, [board]);
 
-  const handleUpdateColumn = async (newTask: Task, columnKey: string) => {
-    const updatedArray = [...columns[columnKey], newTask];
-    const updatedColumns = { ...columns, [columnKey]: updatedArray };
-
-    setColumns(updatedColumns);
-
-    console.log("updated columns: ", updatedColumns);
-
+  const updateBoard = async (updatedColumns: ColumnType) => {
     const response = await saveBoard(board ? board.id : null, {
       name: board ? board.name : "Untitled Board",
       content: updatedColumns,
@@ -63,6 +56,30 @@ export default function BoardView({
     if (response?.data) handleUpdateBoard(response.data);
 
     router.refresh();
+  };
+
+  const handleUpdateColumn = async (newTask: Task, columnKey: string) => {
+    const updatedArray = [...columns[columnKey], newTask];
+    const updatedColumns = { ...columns, [columnKey]: updatedArray };
+
+    setColumns(updatedColumns);
+
+    console.log("updated columns: ", updatedColumns);
+
+    updateBoard(updatedColumns);
+  };
+
+  const handleDeleteColumn = async (id: number, columnKey: string) => {
+    const updatedArray = [...columns[columnKey]].filter(
+      (task) => task.id !== id,
+    );
+    const updatedColumns = { ...columns, [columnKey]: updatedArray };
+
+    setColumns(updatedColumns);
+
+    console.log("updated columns: ", updatedColumns);
+
+    updateBoard(updatedColumns);
   };
 
   return (
@@ -128,6 +145,8 @@ export default function BoardView({
                     id={task.id}
                     index={index}
                     column={column}
+                    columns={columns}
+                    handleDeleteColumn={handleDeleteColumn}
                   >
                     {task.content}
                   </Item>

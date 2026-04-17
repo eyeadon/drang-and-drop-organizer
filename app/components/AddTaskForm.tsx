@@ -14,7 +14,6 @@ interface Props {
 
 export default function AddTaskForm({
   authorId,
-  board,
   columns,
   handleUpdateColumn,
 }: Props) {
@@ -37,8 +36,6 @@ export default function AddTaskForm({
         content,
         authorId,
       });
-
-      // may not be columns yet to save
 
       if (response?.data) {
         for (const [key] of Object.entries(columns)) {
