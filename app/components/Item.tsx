@@ -1,18 +1,16 @@
 "use client";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { ReactNode, useState } from "react";
-import ItemDropdownMenu from "./ItemDropdownMenu";
-import { Task } from "../generated/prisma/client";
 import axios from "axios";
-import { ColumnType } from "./BoardView";
 import Form from "next/form";
+import { ReactNode, useState } from "react";
+import { Task } from "../generated/prisma/client";
+import ItemDropdownMenu from "./ItemDropdownMenu";
 
 interface Props {
   id: number;
   authorId: number;
   index: number;
   column: string;
-  columns: ColumnType;
   children: ReactNode;
   handleUpdateColumn: (newTask: Task, columnKey: string) => Promise<void>;
   handleDeleteColumn: (id: number, columnKey: string) => Promise<void>;
@@ -23,7 +21,6 @@ export default function Item({
   authorId,
   index,
   column,
-  columns,
   children,
   handleUpdateColumn,
   handleDeleteColumn,

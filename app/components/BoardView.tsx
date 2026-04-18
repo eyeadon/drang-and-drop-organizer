@@ -155,7 +155,6 @@ export default function BoardView({
                     authorId={authorId}
                     index={index}
                     column={column}
-                    columns={columns}
                     handleUpdateColumn={handleUpdateColumn}
                     handleDeleteColumn={handleDeleteColumn}
                   >

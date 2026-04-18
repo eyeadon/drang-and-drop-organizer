@@ -1,13 +1,12 @@
 "use client";
-import { ReactNode, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Board } from "../generated/prisma/client";
 import BoardView from "./BoardView";
-import { useRouter } from "next/navigation";
 
 interface Props {
   boards: Board[];
   authorId: number;
-  // onSelectBoard: (board: Board) => void;
 }
 
 const BoardMenu = ({ boards, authorId }: Props) => {
