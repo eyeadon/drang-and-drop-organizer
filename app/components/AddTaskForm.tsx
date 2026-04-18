@@ -37,6 +37,7 @@ export default function AddTaskForm({
         authorId,
       });
 
+      // update column
       if (response?.data) {
         for (const [key] of Object.entries(columns)) {
           if (key === group) {

@@ -1,27 +1,34 @@
+"use client";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import ItemDropdownMenu from "./ItemDropdownMenu";
 import { Task } from "../generated/prisma/client";
 import axios from "axios";
 import { ColumnType } from "./BoardView";
+import Form from "next/form";
 
 interface Props {
   id: number;
+  authorId: number;
   index: number;
   column: string;
   columns: ColumnType;
   children: ReactNode;
+  handleUpdateColumn: (newTask: Task, columnKey: string) => Promise<void>;
   handleDeleteColumn: (id: number, columnKey: string) => Promise<void>;
 }
 
 export default function Item({
   id,
+  authorId,
   index,
   column,
   columns,
   children,
+  handleUpdateColumn,
   handleDeleteColumn,
 }: Props) {
+  const [isEditing, setIsEditing] = useState(false);
   const { ref, isDragging, isDropping, isDragSource } = useSortable({
     id,
     index,
@@ -29,6 +36,35 @@ export default function Item({
     accept: "item",
     group: column,
   });
+
+  const handleEditTask = () => setIsEditing(!isEditing);
+
+  async function editTask(formData: FormData) {
+    const content = formData.get("content") as string;
+
+    async function patchTask(data: { content: string; authorId: number }) {
+      try {
+        return await axios.patch<Task>("/api/tasks/" + id, data);
+      } catch (error) {
+        console.error("Error patching data:", error);
+      }
+    }
+
+    async function replaceTaskInBoard() {
+      const response = await patchTask({
+        content,
+        authorId,
+      });
+
+      // update column
+      if (response?.data) {
+        handleUpdateColumn(response.data, column);
+      }
+    }
+
+    await replaceTaskInBoard();
+    setIsEditing(false);
+  }
 
   async function removeTask(id: number) {
     async function deleteTask(id: number) {
@@ -42,12 +78,9 @@ export default function Item({
     async function removeTaskFromBoard() {
       const response = await deleteTask(id);
 
+      // delete column
       if (response?.status === 200) {
-        for (const [key] of Object.entries(columns)) {
-          if (key === column) {
-            handleDeleteColumn(id, key);
-          }
-        }
+        handleDeleteColumn(id, column);
       }
     }
 
@@ -55,7 +88,7 @@ export default function Item({
   }
 
   return (
-    <button
+    <div
       className={isDragSource ? "Item active" : "Item"}
       ref={ref}
       data-dragging={isDragging}
@@ -63,8 +96,32 @@ export default function Item({
       data-index={index}
       data-column={column}
     >
-      {children}
-      <ItemDropdownMenu id={id} removeTask={removeTask} />
-    </button>
+      {!isEditing ? (
+        children
+      ) : (
+        <Form action={editTask} className="">
+          <div>
+            <textarea
+              id="content"
+              name="content"
+              placeholder={children!.toString()}
+              rows={1}
+              className="w-full px-4 py-2 border rounded-lg bg-white"
+            />
+          </div>
+          <button
+            type="submit"
+            className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Done
+          </button>
+        </Form>
+      )}
+      <ItemDropdownMenu
+        id={id}
+        removeTask={removeTask}
+        handleEditTask={handleEditTask}
+      />
+    </div>
   );
 }

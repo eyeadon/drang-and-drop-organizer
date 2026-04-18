@@ -1,6 +1,6 @@
 /* Draggable Button */
 
-.btn {
+/* .btn {
   display: flex;
   width: max-content;
   height: min-content;
@@ -20,7 +20,7 @@
     opacity 0.2s ease;
 }
 
-/* .btn::before {
+.btn::before {
   content: "";
   display: inline-block;
   width: 34px;
@@ -28,7 +28,7 @@
   background-image: url("");
   background-size: contain;
   background-repeat: no-repeat;
-} */
+}
 
 .btn:hover {
   background-color: #0056b3;
@@ -57,7 +57,7 @@
 
 .btn[disabled] {
   opacity: 0.3;
-}
+} 
 
 .droppable {
   display: flex;
@@ -87,7 +87,7 @@
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
-  /* opacity: 0.3; */
+  opacity: 0.3;
   transition:
     opacity 300ms ease,
     transform 200ms ease;
@@ -130,7 +130,7 @@
 .droppable:not(:empty)::after {
   opacity: 0.2;
   transform: translate3d(-50%, 100%, 0) scale(0.8);
-}
+} */
 
 /* Sortable */
 

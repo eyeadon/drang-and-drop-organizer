@@ -59,14 +59,23 @@ export default function BoardView({
   };
 
   const handleUpdateColumn = async (newTask: Task, columnKey: string) => {
-    const updatedArray = [...columns[columnKey], newTask];
+    let updatedArray: Task[] = [...columns[columnKey]];
+
+    if (columns[columnKey].some((task) => task.id === newTask.id)) {
+      updatedArray = updatedArray.map((task) =>
+        task.id === newTask.id ? newTask : task,
+      );
+    } else {
+      updatedArray = [...updatedArray, newTask];
+    }
+
     const updatedColumns = { ...columns, [columnKey]: updatedArray };
 
     setColumns(updatedColumns);
 
     console.log("updated columns: ", updatedColumns);
 
-    updateBoard(updatedColumns);
+    await updateBoard(updatedColumns);
   };
 
   const handleDeleteColumn = async (id: number, columnKey: string) => {
@@ -79,7 +88,7 @@ export default function BoardView({
 
     console.log("updated columns: ", updatedColumns);
 
-    updateBoard(updatedColumns);
+    await updateBoard(updatedColumns);
   };
 
   return (
@@ -143,9 +152,11 @@ export default function BoardView({
                   <Item
                     key={task.id}
                     id={task.id}
+                    authorId={authorId}
                     index={index}
                     column={column}
                     columns={columns}
+                    handleUpdateColumn={handleUpdateColumn}
                     handleDeleteColumn={handleDeleteColumn}
                   >
                     {task.content}

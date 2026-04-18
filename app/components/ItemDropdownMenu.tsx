@@ -6,9 +6,10 @@ import { Task } from "../generated/prisma/client";
 interface Props {
   id: number;
   removeTask: (id: number) => Promise<void>;
+  handleEditTask: () => void;
 }
 
-const ItemDropdownMenu = ({ id, removeTask }: Props) => {
+const ItemDropdownMenu = ({ id, removeTask, handleEditTask }: Props) => {
   const [isSubmitting, setSubmitting] = useState(false);
 
   return (
@@ -29,7 +30,9 @@ const ItemDropdownMenu = ({ id, removeTask }: Props) => {
           href="#"
           onClick={(event) => {
             event.preventDefault();
-            // function
+            setSubmitting(true);
+            handleEditTask();
+            setSubmitting(false);
           }}
         >
           Edit
