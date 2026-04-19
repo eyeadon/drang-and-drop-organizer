@@ -6,7 +6,7 @@ export const taskSchema = z.object({
 
 export const postTaskSchema = z.object({
   content: z.string("Task is required.").min(1, "Task is required.").max(300),
-  authorId: z.number().positive().nullish(),
+  authorId: z.number().positive(),
 });
 
 export const patchTaskSchema = z.object({
