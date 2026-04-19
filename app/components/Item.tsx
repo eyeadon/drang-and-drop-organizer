@@ -5,6 +5,10 @@ import Form from "next/form";
 import { ReactNode, useState } from "react";
 import { Task } from "../generated/prisma/client";
 import ItemDropdownMenu from "./ItemDropdownMenu";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { taskSchema } from "../api/validationSchemas";
 
 interface Props {
   id: number;
@@ -16,6 +20,8 @@ interface Props {
   handleDeleteColumn: (id: number, columnKey: string) => Promise<void>;
 }
 
+type TaskFormData = z.infer<typeof taskSchema>;
+
 export default function Item({
   id,
   authorId,
@@ -26,6 +32,9 @@ export default function Item({
   handleDeleteColumn,
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
   const { ref, isDragging, isDropping, isDragSource } = useSortable({
     id,
     index,
@@ -33,23 +42,31 @@ export default function Item({
     accept: "item",
     group: column,
   });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TaskFormData>({
+    resolver: zodResolver(taskSchema),
+  });
 
   const handleEditTask = () => setIsEditing(!isEditing);
 
-  async function editTask(formData: FormData) {
-    const content = formData.get("content") as string;
-
+  async function editTask(data: { content: string }) {
     async function patchTask(data: { content: string; authorId: number }) {
       try {
+        setSubmitting(true);
         return await axios.patch<Task>("/api/tasks/" + id, data);
       } catch (error) {
+        setSubmitting(false);
         console.error("Error patching data:", error);
+        setError("An unexpected error occured");
       }
     }
 
     async function replaceTaskInBoard() {
       const response = await patchTask({
-        content,
+        content: data.content,
         authorId,
       });
 
@@ -96,23 +113,28 @@ export default function Item({
       {!isEditing ? (
         children
       ) : (
-        <Form action={editTask} className="">
+        <form onSubmit={handleSubmit(editTask)} className="">
           <div>
+            {error && <p className="text-red-800">{error}</p>}
             <textarea
               id="content"
-              name="content"
               placeholder={children!.toString()}
               rows={1}
               className="w-full px-4 py-2 border rounded-lg bg-white"
+              {...register("content")}
             />
+            {errors && (
+              <p className="text-red-800">{errors.content?.message}</p>
+            )}
+            <button
+              disabled={isSubmitting}
+              type="submit"
+              className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            >
+              Done
+            </button>
           </div>
-          <button
-            type="submit"
-            className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-          >
-            Done
-          </button>
-        </Form>
+        </form>
       )}
       <ItemDropdownMenu
         id={id}
