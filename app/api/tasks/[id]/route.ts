@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { patchTaskSchema } from "../../validationSchemas";
 
 export async function PATCH(
   request: NextRequest,
@@ -8,6 +9,10 @@ export async function PATCH(
   const { id } = await params;
 
   const body = await request.json();
+
+  const validation = patchTaskSchema.safeParse(body);
+  if (!validation.success)
+    return NextResponse.json(validation.error, { status: 400 });
 
   const { content, authorId } = body;
 
