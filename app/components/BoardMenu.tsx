@@ -12,10 +12,15 @@ interface Props {
 const BoardMenu = ({ boards, authorId }: Props) => {
   const router = useRouter();
   const [selectedBoard, setSelectedBoard] = useState<Board | undefined>();
+  const [isEditingBoardName, setEditingBoardName] = useState(false);
 
   const handleUpdateBoard = (board: Board | undefined) => {
     setSelectedBoard(board);
     router.refresh();
+  };
+
+  const handleEditingBoardName = (flag: boolean) => {
+    setEditingBoardName(flag);
   };
 
   // console.log("BoardMenu selectedBoard ", selectedBoard);
@@ -33,6 +38,7 @@ const BoardMenu = ({ boards, authorId }: Props) => {
               onClick={(event) => {
                 event.preventDefault();
                 setSelectedBoard(board);
+                setEditingBoardName(false);
                 router.refresh();
               }}
             >
@@ -47,12 +53,16 @@ const BoardMenu = ({ boards, authorId }: Props) => {
           authorId={authorId}
           board={selectedBoard}
           handleUpdateBoard={handleUpdateBoard}
+          isEditingBoardName={isEditingBoardName}
+          handleEditingBoardName={handleEditingBoardName}
         />
       ) : (
         <BoardView
           authorId={authorId}
           board={null}
           handleUpdateBoard={handleUpdateBoard}
+          isEditingBoardName={isEditingBoardName}
+          handleEditingBoardName={handleEditingBoardName}
         />
       )}
     </>

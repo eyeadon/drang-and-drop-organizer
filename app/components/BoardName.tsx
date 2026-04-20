@@ -1,27 +1,33 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { boardSchema } from "../api/validationSchemas";
 import { saveBoard } from "../functions";
-import { useRouter } from "next/navigation";
 import { Board } from "../generated/prisma/client";
 import { ColumnType } from "./BoardView";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { boardSchema } from "../api/validationSchemas";
-import axios from "axios";
 
 interface Props {
   authorId: number;
   board: Board | null;
   columns: ColumnType;
   handleUpdateBoard: (board: Board | undefined) => void;
+  isEditingBoardName: boolean;
+  handleEditingBoardName: (flag: boolean) => void;
 }
 
 type TaskFormData = z.infer<typeof boardSchema>;
 
-const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
-  const router = useRouter();
-  const [isEditing, setEditing] = useState(false);
+const BoardName = ({
+  authorId,
+  board,
+  columns,
+  handleUpdateBoard,
+  isEditingBoardName,
+  handleEditingBoardName,
+}: Props) => {
   const [isSubmitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [isDeleting, setDeleting] = useState(false);
@@ -47,7 +53,7 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
     if (response) handleUpdateBoard(response.data as Board);
 
     reset();
-    setEditing(false);
+    handleEditingBoardName(false);
     setSubmitting(false);
   }
 
@@ -57,6 +63,7 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
         return await axios.delete<Board>("/api/boards/" + id);
       } catch (error) {
         console.error("Error deleting data:", error);
+        setError("An unexpected error occured");
       }
     }
 
@@ -80,11 +87,11 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
       <div className="flex flex-row gap-4 items-start">
         <button
           className="cursor-pointer bg-gray-200 border border-gray-200 rounded-lg px-3 py-2 text-lg font-semibold mr-2 mb-2 hover:border-blue-600 hover:border"
-          onClick={() => setEditing(!isEditing)}
+          onClick={() => handleEditingBoardName(!isEditingBoardName)}
         >
           {board ? board.name : "Untitled Board"}
         </button>
-        {isEditing && (
+        {isEditingBoardName && (
           <div className="flex flex-row gap-2 items-start">
             <form onSubmit={handleSubmit(editBoardName)}>
               {error && <p className="text-red-800">{error}</p>}
@@ -106,7 +113,7 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
               disabled={isDeleting}
               onClick={async () => {
                 setDeleting(true);
-                setEditing(false);
+                handleEditingBoardName(false);
                 await removeBoard(board?.id);
                 setDeleting(false);
               }}

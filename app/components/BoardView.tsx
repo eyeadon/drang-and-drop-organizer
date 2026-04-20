@@ -15,6 +15,8 @@ interface Props {
   authorId: number;
   board: Board | null;
   handleUpdateBoard: (board: Board | undefined) => void;
+  isEditingBoardName: boolean;
+  handleEditingBoardName: (flag: boolean) => void;
 }
 
 export interface ColumnType {
@@ -25,6 +27,8 @@ export default function BoardView({
   authorId,
   board,
   handleUpdateBoard,
+  isEditingBoardName,
+  handleEditingBoardName,
 }: Props) {
   const router = useRouter();
 
@@ -99,6 +103,8 @@ export default function BoardView({
           board={board}
           columns={columns}
           handleUpdateBoard={handleUpdateBoard}
+          isEditingBoardName={isEditingBoardName}
+          handleEditingBoardName={handleEditingBoardName}
         />
       </div>
       <div className="flex flex-col gap-4 items-center sm:flex-col">
