@@ -41,6 +41,7 @@ export default function Item({
     accept: "item",
     group: column,
   });
+
   const {
     register,
     handleSubmit,

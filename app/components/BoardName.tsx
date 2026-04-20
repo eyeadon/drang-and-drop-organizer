@@ -1,10 +1,13 @@
 "use client";
-import Form from "next/form";
 import { useState } from "react";
 import { saveBoard } from "../functions";
 import { useRouter } from "next/navigation";
 import { Board } from "../generated/prisma/client";
 import { ColumnType } from "./BoardView";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { boardSchema } from "../api/validationSchemas";
 
 interface Props {
   authorId: number;
@@ -13,18 +16,27 @@ interface Props {
   handleUpdateBoard: (board: Board | undefined) => void;
 }
 
+type TaskFormData = z.infer<typeof boardSchema>;
+
 const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
   const router = useRouter();
   const [formDisplay, setFormDisplay] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  async function editBoardName(formData: FormData) {
-    const newName = formData.get("boardName") as string;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TaskFormData>({
+    resolver: zodResolver(boardSchema),
+  });
 
+  async function editBoardName(data: { name: string }) {
     setSubmitting(true);
 
     const response = await saveBoard(board ? board.id : null, {
-      name: newName,
+      name: data.name,
       content: columns,
       authorId,
     });
@@ -46,12 +58,13 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
           {board ? board.name : "Untitled Board"}
         </button>
         {formDisplay && (
-          <Form action={editBoardName} className="">
+          <form onSubmit={handleSubmit(editBoardName)} className="">
+            {error && <p className="text-red-800">{error}</p>}
             <input
-              id="boardName"
-              name="boardName"
+              id="name"
               placeholder={board ? board.name : "Untitled Board"}
               className="border bg-white text-lg rounded-lg px-3 py-2 mr-2 mb-2"
+              {...register("name")}
             />
             <button
               type="submit"
@@ -60,7 +73,8 @@ const BoardName = ({ authorId, board, columns, handleUpdateBoard }: Props) => {
             >
               Save
             </button>
-          </Form>
+            {errors && <p className="text-red-800">{errors.name?.message}</p>}
+          </form>
         )}
       </div>
     </>
