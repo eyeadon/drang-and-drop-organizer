@@ -401,6 +401,6 @@
 
 a.disabled-link {
   pointer-events: none;
-  cursor: default;
+  cursor: not-allowed;
   opacity: 0.5;
 }

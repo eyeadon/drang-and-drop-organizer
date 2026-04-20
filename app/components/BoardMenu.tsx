@@ -15,6 +15,7 @@ const BoardMenu = ({ boards, authorId }: Props) => {
 
   const handleUpdateBoard = (board: Board | undefined) => {
     setSelectedBoard(board);
+    router.refresh();
   };
 
   // console.log("BoardMenu selectedBoard ", selectedBoard);
