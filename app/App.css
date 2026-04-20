@@ -398,3 +398,9 @@
 .dropdown:hover .dropbtn {
   background-color: #949494;
 }
+
+a.disabled-link {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+}

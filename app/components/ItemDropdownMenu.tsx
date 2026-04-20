@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const ItemDropdownMenu = ({ id, removeTask, handleEditTask }: Props) => {
-  const [isSubmitting, setSubmitting] = useState(false);
+  const [isDeleting, setDeleting] = useState(false);
 
   return (
     <div className="dropdown">
@@ -28,20 +29,20 @@ const ItemDropdownMenu = ({ id, removeTask, handleEditTask }: Props) => {
           href="#"
           onClick={(event) => {
             event.preventDefault();
-            setSubmitting(true);
             handleEditTask();
-            setSubmitting(false);
           }}
         >
           Edit
         </a>
         <a
           href="#"
+          className={isDeleting ? "disabled-link" : ""}
+          tabIndex={isDeleting ? -1 : 0}
           onClick={async (event) => {
             event.preventDefault();
-            setSubmitting(true);
+            setDeleting(true);
             await removeTask(id);
-            setSubmitting(false);
+            setDeleting(false);
           }}
         >
           Delete

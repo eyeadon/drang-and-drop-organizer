@@ -78,7 +78,7 @@ export default function BoardView({
     await updateBoard(updatedColumns);
   };
 
-  const handleDeleteColumn = async (id: number, columnKey: string) => {
+  const handleDeleteTaskInColumn = async (id: number, columnKey: string) => {
     const updatedArray = [...columns[columnKey]].filter(
       (task) => task.id !== id,
     );
@@ -156,7 +156,7 @@ export default function BoardView({
                     index={index}
                     column={column}
                     handleUpdateColumn={handleUpdateColumn}
-                    handleDeleteColumn={handleDeleteColumn}
+                    handleDeleteTaskInColumn={handleDeleteTaskInColumn}
                   >
                     {task.content}
                   </Item>

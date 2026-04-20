@@ -16,7 +16,7 @@ interface Props {
   column: string;
   children: ReactNode;
   handleUpdateColumn: (newTask: Task, columnKey: string) => Promise<void>;
-  handleDeleteColumn: (id: number, columnKey: string) => Promise<void>;
+  handleDeleteTaskInColumn: (id: number, columnKey: string) => Promise<void>;
 }
 
 type TaskFormData = z.infer<typeof taskSchema>;
@@ -28,9 +28,9 @@ export default function Item({
   column,
   children,
   handleUpdateColumn,
-  handleDeleteColumn,
+  handleDeleteTaskInColumn,
 }: Props) {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setEditing] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -49,7 +49,7 @@ export default function Item({
     resolver: zodResolver(taskSchema),
   });
 
-  const handleEditTask = () => setIsEditing(!isEditing);
+  const handleEditTask = () => setEditing(!isEditing);
 
   async function editTask(data: { content: string }) {
     async function patchTask(data: { content: string; authorId: number }) {
@@ -76,7 +76,7 @@ export default function Item({
     }
 
     await replaceTaskInBoard();
-    setIsEditing(false);
+    setEditing(false);
   }
 
   async function removeTask(id: number) {
@@ -93,7 +93,7 @@ export default function Item({
 
       // delete column
       if (response?.status === 200) {
-        handleDeleteColumn(id, column);
+        handleDeleteTaskInColumn(id, column);
       }
     }
 
@@ -128,9 +128,15 @@ export default function Item({
             <button
               disabled={isSubmitting}
               type="submit"
-              className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mr-2"
             >
               Done
+            </button>
+            <button
+              onClick={() => setEditing(false)}
+              className="cursor-pointer bg-gray-200 text-black px-4 py-2 rounded-lg hover:bg-gray-500"
+            >
+              Cancel
             </button>
           </div>
         </form>
