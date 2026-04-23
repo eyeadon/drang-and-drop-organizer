@@ -46,6 +46,7 @@ export default function BoardView({
   // set starting columns using board content
   useEffect(() => {
     if (board) setColumns(board.content as ColumnType);
+    else setColumns(startingColumns);
   }, [board]);
 
   const updateBoard = async (updatedColumns: ColumnType) => {

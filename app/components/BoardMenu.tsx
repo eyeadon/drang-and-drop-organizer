@@ -27,26 +27,46 @@ const BoardMenu = ({ boards, authorId }: Props) => {
 
   return (
     <>
-      <div className="">
+      <menu className="flex flex-row">
         {boards.map((board) => (
-          <span
+          <a
+            href="#"
             key={board.id}
-            className="inline-block bg-blue-200 rounded-full border-2 border-indigo-500 px-3 py-1 text-md font-semibold text-blue-950 mr-2 mb-2"
+            className="bg-blue-200 rounded-full border-2 border-indigo-500 px-3 py-1 text-md font-semibold text-blue-950 mr-2 mb-2"
+            onClick={(event) => {
+              event.preventDefault();
+              setSelectedBoard(board);
+              setEditingBoardName(false);
+              router.refresh();
+            }}
           >
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                setSelectedBoard(board);
-                setEditingBoardName(false);
-                router.refresh();
-              }}
-            >
-              {board.name}
-            </a>
-          </span>
+            {board.name}
+          </a>
         ))}
-      </div>
+        <button
+          key={"newEvent"}
+          className="cursor-pointer flex flex-row items-center bg-blue-200 rounded-full border-2 border-teal-500 px-3 py-1 text-md font-semibold text-blue-950 mr-2 mb-2"
+          onClick={() => {
+            setSelectedBoard(undefined);
+            setEditingBoardName(true);
+          }}
+        >
+          New Board
+          <svg
+            className="inline mx-0.5 h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"
+            />
+          </svg>
+        </button>
+      </menu>
 
       {selectedBoard ? (
         <BoardView
