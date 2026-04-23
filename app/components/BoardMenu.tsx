@@ -45,7 +45,7 @@ const BoardMenu = ({ boards, authorId }: Props) => {
         ))}
         <button
           key={"newEvent"}
-          className="cursor-pointer flex flex-row items-center bg-blue-200 rounded-full border-2 border-teal-500 px-3 py-1 text-md font-semibold text-blue-950 mr-2 mb-2"
+          className="cursor-pointer flex flex-row items-center bg-blue-200 rounded-full border-2 border-teal-500 pl-3 pr-1 py-1 text-md font-semibold text-blue-950 mr-2 mb-2"
           onClick={() => {
             setSelectedBoard(undefined);
             setEditingBoardName(true);
@@ -53,8 +53,8 @@ const BoardMenu = ({ boards, authorId }: Props) => {
         >
           New Board
           <svg
-            className="inline mx-0.5 h-5 w-5"
-            viewBox="0 0 20 20"
+            className="mx-1 h-5 w-5"
+            viewBox="-2 -2 24 24"
             fill="currentColor"
             aria-hidden="true"
             stroke="currentColor"

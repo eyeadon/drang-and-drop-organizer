@@ -84,15 +84,18 @@ const BoardName = ({
 
   return (
     <>
-      <div className="flex flex-row gap-4 items-start">
+      <div className="flex flex-row gap-2 items-start">
         <button
-          className="cursor-pointer bg-gray-200 border border-gray-200 rounded-lg px-3 py-2 text-lg font-semibold mr-2 mb-2 hover:border-blue-600 hover:border"
+          className="flex flex-row items-center cursor-pointer bg-gray-200 border border-gray-200 rounded-lg pl-3 pr-1 py-2 text-lg font-semibold mr-2 mb-2 hover:border-blue-600 hover:border"
           onClick={() => handleEditingBoardName(!isEditingBoardName)}
         >
           {board ? board.name : "Untitled Board"}
+          <svg className="fill-gray-500 mx-2 h-5 w-5" viewBox="-2 -2 24 24">
+            <path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.154-1.262a4 4 0 001.615-1.186L16.5 6.452l-2.952-2.951L3.881 13.148a4 4 0 00-1.186 1.615zM17.147 5.805l-2.952-2.951 1.135-1.135a1.5 1.5 0 012.122 0l.83.83a1.5 1.5 0 010 2.122l-1.135 1.135z" />
+          </svg>
         </button>
         {isEditingBoardName && (
-          <div className="flex flex-row gap-2 items-start">
+          <div className="flex flex-row items-start">
             <form onSubmit={handleSubmit(editBoardName)}>
               {error && <p className="text-red-800">{error}</p>}
               <input
