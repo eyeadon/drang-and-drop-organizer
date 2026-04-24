@@ -1,7 +1,10 @@
 import axios from "axios";
 import { ColumnType } from "./components/BoardView";
 import { Board } from "./generated/prisma/client";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+
+export function capitalizeFirstLetter(string: string | undefined) {
+  return string ? string.charAt(0).toUpperCase() + string.slice(1) : "";
+}
 
 export interface StringColumnType {
   [key: string]: string[];
@@ -16,10 +19,6 @@ export function columnTasksToStrings(cols: ColumnType) {
   });
 
   return updatedColumns;
-}
-
-export function capitalizeFirstLetter(string: string | undefined) {
-  return string ? string.charAt(0).toUpperCase() + string.slice(1) : "";
 }
 
 export async function saveBoard(

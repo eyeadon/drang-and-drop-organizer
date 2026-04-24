@@ -10,6 +10,7 @@ import AddTaskForm from "./AddTaskForm";
 import Column from "./Column";
 import Item from "./Item";
 import BoardName from "./BoardName";
+import AddTaskFormInColumn from "./AddTaskFormInColumn";
 
 interface Props {
   authorId: number;
@@ -111,7 +112,6 @@ export default function BoardView({
       <div className="flex flex-col gap-4 items-center sm:flex-col">
         <AddTaskForm
           authorId={authorId}
-          board={board}
           columns={columns}
           handleUpdateColumn={handleUpdateColumn}
         />
@@ -168,6 +168,11 @@ export default function BoardView({
                     {task.content}
                   </Item>
                 ))}
+                <AddTaskFormInColumn
+                  authorId={authorId}
+                  column={column}
+                  handleUpdateColumn={handleUpdateColumn}
+                />
               </Column>
             ))}
           </div>

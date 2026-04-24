@@ -2,12 +2,12 @@
 import axios from "axios";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
-import { Board, Task } from "../generated/prisma/client";
+import { Task } from "../generated/prisma/client";
 import { ColumnType } from "./BoardView";
+import { capitalizeFirstLetter } from "../functions";
 
 interface Props {
   authorId: number;
-  board: Board | null;
   columns: ColumnType;
   handleUpdateColumn: (newTask: Task, columnKey: string) => void;
 }
@@ -17,11 +17,9 @@ export default function AddTaskForm({
   columns,
   handleUpdateColumn,
 }: Props) {
-  const router = useRouter();
-
   async function createTask(formData: FormData) {
     const content = formData.get("content") as string;
-    const group = formData.get("group") as string;
+    const group = capitalizeFirstLetter(formData.get("group") as string);
 
     async function postTask(data: { content: string; authorId: number }) {
       try {
@@ -52,10 +50,10 @@ export default function AddTaskForm({
 
   return (
     <>
-      <div className="max-w-2xl mx-auto p-4">
-        <Form action={createTask} className="space-y-6">
-          <div>
-            <label htmlFor="content" className="block text-black text-lg mb-2">
+      <div className="max-w-2xl mx-auto py-4">
+        <Form action={createTask} className="flex flex-row gap-3 items-end">
+          <div className="flex flex-col">
+            <label htmlFor="content" className="text-black text-lg mb-2">
               Task
             </label>
             <textarea
@@ -66,9 +64,9 @@ export default function AddTaskForm({
               className="w-full px-4 py-2 border rounded-lg bg-white"
             />
           </div>
-          <div>
-            <label htmlFor="group" className="block text-black text-lg mb-2">
-              Starting Group
+          <div className="flex flex-col">
+            <label htmlFor="group" className="text-black text-lg mb-2">
+              Group
             </label>
             <textarea
               id="group"
@@ -78,12 +76,14 @@ export default function AddTaskForm({
               className="w-full px-4 py-2 border rounded-lg bg-white"
             />
           </div>
-          <button
-            type="submit"
-            className="cursor-pointer w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
-          >
-            Add Task
-          </button>
+          <div>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            >
+              Add Task
+            </button>
+          </div>
         </Form>
       </div>
     </>

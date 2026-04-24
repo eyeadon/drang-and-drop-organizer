@@ -110,9 +110,7 @@ export default function Item({
       data-index={index}
       data-column={column}
     >
-      {!isEditing ? (
-        children
-      ) : (
+      {isEditing ? (
         <form onSubmit={handleSubmit(editTask)} className="">
           <div>
             {error && <p className="text-red-800">{error}</p>}
@@ -141,6 +139,8 @@ export default function Item({
             </button>
           </div>
         </form>
+      ) : (
+        children
       )}
       <ItemDropdownMenu
         id={id}
