@@ -19,7 +19,7 @@ export default async function Home() {
 
   return (
     <>
-      <div className="font-sans grid grid-rows-1 items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+      <div className="font-sans grid grid-rows-1 items-start justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
         <main className="flex flex-col gap-4 row-start-1 items-center sm:items-start">
           <BoardMenu boards={startingBoards} authorId={userId} />
         </main>
